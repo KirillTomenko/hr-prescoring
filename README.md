@@ -158,7 +158,9 @@ Heuristic = Hard_hits × W_hard + Exp_hits × W_exp + Soft_hits × W_soft
 
 ## 📸 Скриншоты
 
-> *Добавь скриншоты интерфейса после запуска*
+![Main](screenshots/main.png)
+![Comparison](screenshots/comparison.png)
+![History](screenshots/history.png)
 
 ---
 
