@@ -76,6 +76,7 @@ st.markdown("""
         background: #1e2030; border-left: 4px solid #6366f1;
         border-radius: 8px; padding: 14px 18px; margin: 10px 0;
         font-size: .9rem; line-height: 1.6;
+        color: #e2e8f0 !important;
     }
 
     /* Divider */
@@ -242,7 +243,7 @@ with st.sidebar:
 
     st.markdown(
         f"""
-        <div class="info-box">
+        <div class="info-box" style="color:#e2e8f0">
         ✅ Нормализовано:<br>
         🔧 Hard: <b>{w_hard*100:.0f}%</b> &nbsp;
         📂 Опыт: <b>{w_exp*100:.0f}%</b> &nbsp;
@@ -333,7 +334,7 @@ with tab_assess:
     # ── Assess button ─────────────────────────────────────────────────────────
     col_btn, col_info = st.columns([1, 3])
     with col_btn:
-        assess_btn = st.button("🚀 Оценить кандидата", type="primary", use_container_width=True)
+        assess_btn = st.button("🚀 Оценить кандидата", type="primary", width='stretch')
 
     if assess_btn:
         # Validation
@@ -393,7 +394,7 @@ with tab_assess:
             # Quick preview
             st.markdown("### 📊 Быстрый обзор по моделям")
             fig = model_comparison_bar(comparison)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch', key="compare_bar_preview")
 
             st.info("👉 Перейди на вкладку **🔬 Сравнение моделей** для детального анализа")
 
@@ -433,17 +434,17 @@ with tab_assess:
                 st.caption(f"Модель: `{selected_model}` · GPT: {assessment.score} · Эвристика: {heuristic.composite}")
 
             with top_mid:
-                st.plotly_chart(gauge_chart(assessment.score, "GPT Score"), use_container_width=True)
+                st.plotly_chart(gauge_chart(assessment.score, "GPT Score"), width='stretch', key="gauge_gpt")
 
             with top_right:
-                st.plotly_chart(gauge_chart(heuristic.composite, "Heuristic Score"), use_container_width=True)
+                st.plotly_chart(gauge_chart(heuristic.composite, "Heuristic Score"), width='stretch', key="gauge_heuristic")
 
             # Radar
             st.markdown("#### 📡 Профиль по категориям")
             col_radar, col_details = st.columns([1, 1.5])
 
             with col_radar:
-                st.plotly_chart(radar_chart(heuristic), use_container_width=True)
+                st.plotly_chart(radar_chart(heuristic), width='stretch', key="radar_assess")
 
             with col_details:
                 metric_cols = st.columns(3)
@@ -452,8 +453,7 @@ with tab_assess:
                 metric_cols[2].metric("🤝 Soft Skills", f"{heuristic.soft_skills:.0f}/100")
 
                 st.markdown('<br>', unsafe_allow_html=True)
-                st.markdown(f'<div class="info-box">📝 {assessment.summary}</div>',
-                            unsafe_allow_html=True)
+                st.markdown(f'<div class="info-box" style="color:#e2e8f0">{assessment.summary}</div>', unsafe_allow_html=True)
 
             # Strengths / Weaknesses / Missing
             st.markdown('<hr class="fancy-divider">', unsafe_allow_html=True)
@@ -493,7 +493,7 @@ with tab_compare:
 
         # ── Bar chart ──────────────────────────────────────────────────────────
         st.markdown("### 📊 Score по моделям")
-        st.plotly_chart(model_comparison_bar(comparison), use_container_width=True)
+        st.plotly_chart(model_comparison_bar(comparison), width='stretch', key="compare_bar_main")
 
         # ── Side-by-side cards ─────────────────────────────────────────────────
         st.markdown("### 📋 Детальное сравнение")
@@ -516,14 +516,14 @@ with tab_compare:
                 st.markdown("**❌ Отсутствуют:**")
                 render_tags(assessment.missing_skills, "red")
 
-                st.markdown(f'<div class="info-box">{assessment.summary}</div>',
+                st.markdown(f'<div class="info-box" style="color:#e2e8f0">{assessment.summary}</div>',
                             unsafe_allow_html=True)
 
         # ── Radar overlay ──────────────────────────────────────────────────────
         st.markdown("### 📡 Эвристический профиль (общий)")
         col_r, col_s = st.columns([1, 1.5])
         with col_r:
-            st.plotly_chart(radar_chart(heuristic), use_container_width=True)
+            st.plotly_chart(radar_chart(heuristic), width='stretch', key="radar_compare")
         with col_s:
             st.markdown("Эвристика одинакова для всех моделей — она основана на анализе ключевых слов резюме и не зависит от выбранной LLM.")
             mcols = st.columns(3)
@@ -578,7 +578,7 @@ with tab_history:
         )
         fig_dist.update_layout(paper_bgcolor="#0f1117", plot_bgcolor="#1e2030",
                                 height=240, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_dist, use_container_width=True)
+        st.plotly_chart(fig_dist, width='stretch', key="history_dist")
 
         # ── Sortable table ─────────────────────────────────────────────────────
         display_cols = ["Кандидат", "Вакансия", "Модель", "Итог",
@@ -587,7 +587,7 @@ with tab_history:
         existing_cols = [c for c in display_cols if c in df.columns]
         st.dataframe(
             df[existing_cols].sort_values("Итог", ascending=False),
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
         )
 
